@@ -12,5 +12,5 @@ procs:
     shell: 'if [ "$DEV" = both ] || echo "$DEV" | grep -qw booking; then cd ../booking && npm start -- --platform android; else adb reverse tcp:9000 tcp:9000 || true; python3 -m http.server 9000 --directory ../booking/build/generated; fi'
     stop: SIGKILL
   News:
-    shell: 'if [ "$DEV" = both ] || echo "$DEV" | grep -qw news; then cd ../news-mini-app-showcase && pnpm start --platform android; else adb reverse tcp:9004 tcp:9004 || true; python3 -m http.server 9004 --directory ../news-mini-app-showcase/build/generated; fi'
+    shell: 'if [ "$DEV" = both ] || echo "$DEV" | grep -qw news; then cd ../news && pnpm start --platform android; else adb reverse tcp:9004 tcp:9004 || true; python3 -m http.server 9004 --directory ../news/build/generated; fi'
     stop: SIGKILL
