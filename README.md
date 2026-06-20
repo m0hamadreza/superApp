@@ -1,14 +1,6 @@
-<a href="https://www.callstack.com/open-source?utm_campaign=generic&utm_source=github&utm_medium=referral&utm_content=super-app-showcase" align="center">
-  <img src="https://github.com/user-attachments/assets/4ee05e68-54ca-42b3-994c-9de988d66333" alt="Super App Showcase" />
-</a>
+
 <h3 align="center">Super Apps in React Native with Re.Pack</h3>
-<div align="center">
 
-[![mit licence][license-badge]][license]
-[![Chat][chat-badge]][chat]
-[![PRs Welcome][prs-welcome-badge]][prs-welcome]
-
-</div>
 
 Bring micro-frontend architecture to your mobile [React Native](https://reactnative.dev) app with [Re.Pack](https://re-pack.dev) and make it a Super App. [Learn more.](https://www.callstack.com/services/super-app-development?utm_campaign=super_apps&utm_source=github&utm_content=super_app_showcase)
 
@@ -20,24 +12,7 @@ As small apps grow, offering multiple services (payments, messaging, social netw
 
 This showcase demonstrates how to achieve a proper micro-frontend architecture for mobile apps with [Module Federation](https://module-federation.io). It simplifies setup and maintenance, allowing independent apps to be deployed separately or as part of a super app. Micro-frontends can be moved to separate repositories, enabling independent team work or external contributions. Unlike classic monorepos, this setup uses runtime dependencies, so updating a micro-frontend automatically updates all apps using it without redeployment.
 
-## The Super App
-
-<table>
-  <tr>
-    <td>Host App</td>
-    <td>Mini Apps Interaction</td>
-    <td>Booking Standalone App</td>
-  </tr>
-  <tr>
-    <td><img src="images/host-main-screen.png" alt="host-main-screen" width="200"></td>
-    <td><img src="images/host.gif" alt="host" width="200"></td>
-    <td><img src="images/booking.gif" alt="booking" width="200"></td>
-  </tr>  
-</table>
-
 ## Structure
-
-<img src="images/super-app-showcase-scheme.png" />
 
 This monorepo contains the host and a shared SDK; the mini apps live in **separate repositories** and are loaded at runtime as Module Federation remotes:
 
