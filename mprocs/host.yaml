@@ -1,0 +1,19 @@
+procs:
+  Host:
+    shell: pnpm --filter host start
+    stop: SIGKILL
+  # Each remote runs as a DEV SERVER (HMR) only when named in DEV; otherwise it is
+  # served as a prebuilt STATIC bundle (+ adb reverse for the Android emulator).
+  #   pnpm start                  -> both static (pure view-only)
+  #   DEV=booking pnpm start      -> booking dev server, news static + reverse
+  #   DEV=news pnpm start         -> news dev server, booking static + reverse
+  #   DEV=both pnpm start         -> both dev servers
+  # Rebuild a static bundle after pulling changes:
+  #   news:    cd ../news-mini-app-showcase && npx react-native bundle --platform android --dev true --entry-file index.js --bundle-output build/android/index.bundle --assets-dest build/android
+  #   booking: cd ../booking && npx react-native bundle --platform android --dev true --entry-file index.js --bundle-output build/android/index.bundle --assets-dest build/android
+  Booking:
+    shell: 'if [ "$DEV" = both ] || echo "$DEV" | grep -qw booking; then cd ../booking && npm start; else adb reverse tcp:9000 tcp:9000 || true; python3 -m http.server 9000 --directory ../booking/build/generated; fi'
+    stop: SIGKILL
+  News:
+    shell: 'if [ "$DEV" = both ] || echo "$DEV" | grep -qw news; then cd ../news-mini-app-showcase && pnpm start; else adb reverse tcp:9004 tcp:9004 || true; python3 -m http.server 9004 --directory ../news-mini-app-showcase/build/generated; fi'
+    stop: SIGKILL

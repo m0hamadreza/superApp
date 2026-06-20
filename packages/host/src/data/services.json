@@ -1,0 +1,16 @@
+{
+    "data": [
+        {
+            "id": "news",
+            "title": "News and articles",
+            "description": "Read and inspire",
+            "image": "https://picsum.photos/700"
+        },
+        {
+            "id": "booking",
+            "title": "Booking",
+            "description": "Check your schedule",
+            "image": "https://picsum.photos/700"
+        }
+    ]
+}

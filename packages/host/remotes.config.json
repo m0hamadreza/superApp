@@ -1,0 +1,11 @@
+{
+  "comment": "External micro-frontend remotes the host loads at runtime but does not develop. `pnpm setup:remotes` clones (or pulls) each one as a sibling of the monorepo and pre-builds a static bundle. Serve each build/generated/<platform> dir on its port (see mprocs/host*.yaml).",
+  "remotes": [
+    {
+      "name": "news",
+      "repo": "https://github.com/callstack/news-mini-app-showcase.git",
+      "dir": "news-mini-app-showcase",
+      "port": 9004
+    }
+  ]
+}
