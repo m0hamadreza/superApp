@@ -39,20 +39,21 @@ This showcase demonstrates how to achieve a proper micro-frontend architecture f
 
 <img src="images/super-app-showcase-scheme.png" />
 
-The super app contains 4 apps:
+This monorepo contains the host and a shared SDK; the mini apps live in **separate repositories** and are loaded at runtime as Module Federation remotes:
 
-- `host` - the main app, which is a super app. It contains all the micro-frontends and provides a way to navigate between them.
-- `booking` - micro-frontend for booking service.
-  Booking exposes `UpcomingAppointments` screen and `MainNavigator`. `MainNavigator` is Booking app itself. `UpcomingAppointments` screen is a screen, which is used in the super app in its own navigation.
-- `shopping` - micro-frontend for shopping service.
-  Shopping exposes `MainNavigator`. `MainNavigator` is Shopping app itself.
-- `news` - micro-frontend for news service.
-  News exposes `MainNavigator`. `MainNavigator` is News app itself. News mini app stored in separate repository https://github.com/callstack/news-mini-app-showcase to provide the example of using remote container outside of the monorepo.
-- `dashboard` - micro-frontend for dashboard service.
-  Dashboard exposes `MainNavigator`. `MainNavigator` is Dashboard app itself.
-- `auth` - module that is used by other modules to provide authentication and authorization flow and UI.
+- `host` (`packages/host`) - the main app, which is a super app. It loads the mini apps as remotes and provides navigation between them. It registers each remote in [`packages/host/rspack.config.ts`](packages/host/rspack.config.ts).
+- `sdk` (`packages/sdk`) - shared dependency management and utilities consumed by the host and the remotes.
+- `booking` - micro-frontend for the booking service. External remote served on **port 9000**, repo https://github.com/m0hamadreza/booking.
+- `news` - micro-frontend for the news service. External remote served on **port 9004**, repo https://github.com/m0hamadreza/news.
 
-Each of the mini apps could be deployed and run as a standalone app.
+The external remotes are cloned as **siblings** of this repo and, by default, served as prebuilt **static bundles** (view-only) so you can run the super app without their dev servers. When you want to edit one, run its dev server instead. See [`docs/external-remotes.md`](docs/external-remotes.md) for the full details.
+
+```
+development/
+├── superApp/   ← this repo (host + sdk)
+├── booking/    ← external remote (separate repo)
+└── news/       ← external remote (separate repo)
+```
 
 ## How to use
 
@@ -73,11 +74,21 @@ pnpm self-update
 
 ### Setup
 
-Install dependencies for all apps:
+Install the host/SDK dependencies:
 
 ```
 pnpm install
 ```
+
+Clone and pre-build the external remotes (`booking` and `news`) as siblings of this repo. This clones each one (or `git pull` if already present), installs it, and builds a static Module Federation bundle into `<repo>/build/generated/<platform>`:
+
+```
+pnpm setup:remotes                 # both remotes, android (default)
+pnpm setup:remotes --only news     # just one
+pnpm setup:remotes --platform ios  # iOS bundles
+```
+
+Re-run `pnpm setup:remotes` whenever a remote ships changes — a `git pull` alone won't update the static bundle the app loads.
 
 #### iOS
 
@@ -89,30 +100,24 @@ pnpm pods
 
 ### Running the Super App
 
-Start DevServer for Host and Mini apps:
+Start the host and serve the remotes. By default both remotes are served **view-only** as static bundles:
 
 ```
 pnpm start
 ```
 
-Run Super App on iOS or Android (ios | android):
+To develop a remote with live reload (HMR), start it as a dev server instead of the static bundle:
+
+```
+pnpm dev:news       # news = dev server, booking = static
+pnpm dev:booking    # booking = dev server, news = static
+pnpm dev:both       # both = dev servers
+```
+
+Run the Super App on iOS or Android (ios | android):
 
 ```
 pnpm run:host:<platform>
-```
-
-### Running the Mini App as a standalone app
-
-> **💡 NOTE**
->
-> The "booking" and "shopping" mini-apps can't be run in standalone mode (i.e. without the host running). This is a deliberate decision of this repository to showcase the possibility and to reduce the amount of work to keep the mini-apps dependencies up-to-date.
->
-> It's up to you to decide on what kind of developer experience your super app has.
-
-Start DevServer for a Dashboard Mini App as a standalone app:
-
-```
-pnpm start:dashboard
 ```
 
 ### Code Quality Scripts
