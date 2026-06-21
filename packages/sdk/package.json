@@ -13,6 +13,9 @@
     "index.js",
     "preset.js"
   ],
+  "dependencies": {
+    "zustand": "5.0.14"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"

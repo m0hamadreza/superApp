@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import {ScriptManager} from '@callstack/repack/client';
 import {AppRegistry} from 'react-native';
 import App from './src/App';
