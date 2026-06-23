@@ -4,6 +4,7 @@ import {
   ListRenderItem,
   ScrollView,
   StyleSheet,
+  Text as RNText,
   View,
 } from 'react-native';
 import {CompositeScreenProps} from '@react-navigation/native';
@@ -81,6 +82,10 @@ const HomeScreen = (_props: Props) => {
     <ScrollView
       style={styles.container}
       contentInsetAdjustmentBehavior="automatic">
+      {/* NativeWind smoke test — host (blue) */}
+      <View className="m-4 self-start rounded-xl bg-blue-500 px-4 py-3">
+        <RNText className="font-bold text-white">NativeWind ✓ host (blue)</RNText>
+      </View>
       <View style={styles.header}>
         <Text variant="titleLarge" style={styles.headerTitle}>
           Upcoming Appointments

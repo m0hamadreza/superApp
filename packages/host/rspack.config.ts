@@ -1,6 +1,7 @@
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import * as Repack from '@callstack/repack';
+import {NativeWindPlugin} from '@callstack/repack-plugin-nativewind';
 import rspack from '@rspack/core';
 import {getSharedDependencies} from 'super-app-showcase-sdk';
 
@@ -41,6 +42,7 @@ export default Repack.defineRspackConfig(({mode, platform}) => {
     },
     plugins: [
       new Repack.RepackPlugin(),
+      new NativeWindPlugin(),
       new Repack.plugins.ModuleFederationPluginV2({
         name: 'host',
         dts: false,
@@ -48,7 +50,26 @@ export default Repack.defineRspackConfig(({mode, platform}) => {
           booking: `booking@http://localhost:9000/${platform}/mf-manifest.json`,
           news: `news@http://localhost:9004/${platform}/mf-manifest.json`,
         },
-        shared: getSharedDependencies({eager: true}),
+        shared: {
+          ...getSharedDependencies({eager: true}),
+          // Share css-interop as a single instance across host + all mini-apps.
+          // Both the root AND the deep imports (trailing slash) must be shared:
+          // `dist/shared` defines a module-local `StyleRuleSetSymbol` that
+          // native-interop checks before applying a compiled rule. With duplicate
+          // instances, a mini-app re-marks the shared style registry with ITS
+          // Symbol, so host styles fail the check on return (padding/text-color
+          // dropped). One instance = one Symbol = styles survive navigation.
+          'react-native-css-interop': {
+            singleton: true,
+            eager: true,
+            requiredVersion: '*',
+          },
+          'react-native-css-interop/': {
+            singleton: true,
+            eager: true,
+            requiredVersion: '*',
+          },
+        },
       }),
       // silence missing @react-native-masked-view optionally required by @react-navigation/elements
       new rspack.IgnorePlugin({
