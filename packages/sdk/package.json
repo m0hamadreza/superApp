@@ -11,7 +11,8 @@
     "ios",
     "lib",
     "index.js",
-    "preset.js"
+    "preset.js",
+    "tailwind-preset.js"
   ],
   "dependencies": {
     "zustand": "5.0.14"

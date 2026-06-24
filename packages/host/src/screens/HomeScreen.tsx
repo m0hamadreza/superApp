@@ -83,7 +83,7 @@ const HomeScreen = (_props: Props) => {
       style={styles.container}
       contentInsetAdjustmentBehavior="automatic">
       {/* NativeWind smoke test — host (blue) */}
-      <View className="m-4 self-start rounded-xl bg-blue-500 px-4 py-3">
+      <View className="m-4 self-start rounded-xl bg-brand-300 px-4 py-3">
         <RNText className="font-bold text-white">NativeWind ✓ host (blue)</RNText>
       </View>
       <View style={styles.header}>
