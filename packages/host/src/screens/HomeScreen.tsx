@@ -19,6 +19,7 @@ import {
   Title,
   Paragraph,
 } from 'react-native-paper';
+import {Icon} from 'super-app-showcase-sdk/icons';
 import {TabsParamList} from '../navigation/TabsNavigator';
 import {HomeStackParamList} from '../navigation/HomeNavigator';
 import upcomingBookings from '../data/upcomingBookings.json';
@@ -85,6 +86,13 @@ const HomeScreen = (_props: Props) => {
       {/* NativeWind smoke test — host (blue) */}
       <View className="m-4 self-start rounded-xl bg-brand-300 px-4 py-3">
         <RNText className="font-bold text-white">NativeWind ✓ host (blue)</RNText>
+      </View>
+      {/* Shared SVG icons — color follows the brand theme via `text-brand-*`. */}
+      <View className="mx-4 mb-2 flex-row items-center gap-4">
+        <Icon name="home" className="text-brand-500" size={28} />
+        <Icon name="heart" className="text-brand-200" size={28} />
+        <Icon name="bell" className="text-brand-700" size={28} />
+        <Icon name="share" className="text-brand-100" size={18} />
       </View>
       <View style={styles.header}>
         <Text variant="titleLarge" style={styles.headerTitle}>

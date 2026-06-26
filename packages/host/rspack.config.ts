@@ -22,6 +22,21 @@ export default Repack.defineRspackConfig(({mode, platform}) => {
     entry: './index.js',
     resolve: {
       ...Repack.getResolveOptions({enablePackageExports: true}),
+      // The SDK is symlinked (pnpm), so its imports would otherwise resolve to
+      // the SDK's own physical copies of these packages (different peer-hash
+      // dir) — a second react-native instance double-registers native views
+      // ("Tried to register two views with the same name RCTText"). Pin the
+      // singleton-critical / native-registering packages to this app's copy.
+      alias: {
+        react: path.join(__dirname, 'node_modules/react'),
+        'react-native': path.join(__dirname, 'node_modules/react-native'),
+        'react-native-svg': path.join(__dirname, 'node_modules/react-native-svg'),
+        'react-native-css-interop': path.join(
+          __dirname,
+          'node_modules/react-native-css-interop',
+        ),
+        nativewind: path.join(__dirname, 'node_modules/nativewind'),
+      },
     },
     output: {
       uniqueName: 'sas-host',
@@ -37,7 +52,9 @@ export default Repack.defineRspackConfig(({mode, platform}) => {
           },
           type: 'javascript/auto',
         },
-        ...Repack.getAssetTransformRules(),
+        // `svg: 'svgr'` makes `.svg` imports compile to react-native-svg
+        // components (via @svgr/webpack, native:true) — used for shared icons.
+        ...Repack.getAssetTransformRules({svg: 'svgr'}),
       ],
     },
     plugins: [

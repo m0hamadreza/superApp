@@ -10,12 +10,28 @@
     "android",
     "ios",
     "lib",
+    "assets",
+    "icons",
     "index.js",
     "preset.js",
-    "tailwind-preset.js"
+    "tailwind-preset.js",
+    "svg.d.ts"
   ],
   "dependencies": {
+    "@swc/helpers": "^0.5.20",
+    "react-native-svg": "15.15.5",
     "zustand": "5.0.14"
+  },
+  "peerDependencies": {
+    "nativewind": "*",
+    "react": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "nativewind": "^4.2.5",
+    "react": "19.2.3",
+    "react-native": "0.84.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
